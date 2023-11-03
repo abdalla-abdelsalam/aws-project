@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+
+
+    stages {
+        stage('ci') {
+            steps {
+
+                // Get some code from a GitHub repository
+                git branch: 'main', url: 'https://github.com/mennahasan7/final-project.git'
+
+                //credentials for ecr
+                {
+                sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 017520465419.dkr.ecr.us-east-1.amazonaws.com/repo "   
+                sh "docker build . -t "
+                sh "docker push 017520465419.dkr.ecr.us-east-1.amazonaws.com/repo "}
+
+            }
+
+
+        }
+        stage('cd'){
+            steps{
+                  sh """
+                  aws eks --region "us-east-1" update-kubeconfig --name eks-cluster
+                  kubectl apply -f deployment.yaml 
+                  kubectl apply -f service.yaml 
+                  """
+
+            }
+
+        }
+    }
+}
