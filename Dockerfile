@@ -27,10 +27,14 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/sta
     mv kubectl /usr/local/bin/kubectl    
 
 # Install AWS cli
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-    sudo apt install unzip && \
-    sudo unzip awscliv2.zip && \
-    sudo ./aws/install    
+# RUN curl -LO "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+#     sudo apt install unzip && \
+#     unzip awscliv2.zip && \
+#     sudo ./aws/install
+
+RUN apt-get update && \
+    apt-get install -y awscli && \
+    apt-get clean
 
 # Switch back to the Jenkins user
 USER jenkins
