@@ -24,12 +24,12 @@ resource "aws_instance" "bastion_instance" {
 
     ## clone my repo
     git clone https://github.com/abdalla-abdelsalam/aws-project.git
-    cd final-project
+    cd aws-project
 
     ## run jenkins
-    docker build -t jenkins-image -f Dockerfile .
-    docker run -d -p 8080:8080 -p 50000:50000 --name jenkins jenkins-image
-    docker start jenkins
+    sudo docker build -t jenkins-image -f Dockerfile .
+    sudo docker run -d -p 8080:8080 -p 50000:50000 --name jenkins jenkins-image
+    sudo docker start jenkins
   EOF
 
   tags = {
